@@ -1,0 +1,1214 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>田高琳 · Android 开发工程师 · 项目作品集</title>
+<meta name="description" content="田高琳，11 年经验 Android 开发工程师。字节跳动、快手、京东项目经历，覆盖车载系统、AI 应用、IOT 智能硬件，具备 0-1 独立交付全流程能力。">
+<meta property="og:title" content="田高琳 · Android 开发工程师 · 项目作品集">
+<meta property="og:description" content="11 年移动端开发经验 · 字节/快手/京东 · 9 个精选项目 · 支持独立交付 0-1 全流程">
+<meta property="og:type" content="website">
+<style>
+  :root {
+    --bg: #0a0e1a;
+    --bg-2: #0f1526;
+    --card: rgba(19, 27, 48, 0.75);
+    --card-hover: rgba(24, 34, 56, 0.9);
+    --border: rgba(99, 130, 255, 0.14);
+    --text: #e6ecff;
+    --text-dim: #8b96b8;
+    --accent: #5b8cff;
+    --accent-2: #22d3ee;
+    --accent-grad: linear-gradient(120deg, #5b8cff, #22d3ee);
+    --radius: 14px;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Segoe UI", sans-serif;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  ::selection { background: rgba(91, 140, 255, .35); }
+
+  /* ===== 3D 粒子画布 ===== */
+  #stars { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+  .glow {
+    position: fixed; border-radius: 50%; filter: blur(130px);
+    pointer-events: none; z-index: 0; opacity: .3; animation: drift 14s ease-in-out infinite alternate;
+  }
+  .glow-1 { width: 480px; height: 480px; background: #1e3a8a; top: -160px; left: -120px; }
+  .glow-2 { width: 420px; height: 420px; background: #0e7490; top: 30%; right: -160px; animation-delay: -5s; }
+  .glow-3 { width: 380px; height: 380px; background: #4338ca; bottom: -140px; left: 30%; animation-delay: -9s; }
+  @keyframes drift { from { transform: translate(0,0) scale(1); } to { transform: translate(60px, 40px) scale(1.15); } }
+
+  .wrap { position: relative; z-index: 1; max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+
+  /* ===== 导航 ===== */
+  nav {
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: blur(14px);
+    background: rgba(10, 14, 26, .78);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-inner { max-width: 1080px; margin: 0 auto; padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; }
+  .logo { font-weight: 700; font-size: 18px; letter-spacing: .5px; }
+  .logo em { font-style: normal; background: var(--accent-grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .nav-links { display: flex; gap: 22px; }
+  .nav-links a { color: var(--text-dim); text-decoration: none; font-size: 14px; transition: color .2s; position: relative; }
+  .nav-links a::after {
+    content: ""; position: absolute; left: 0; bottom: -4px; width: 0; height: 2px;
+    background: var(--accent-grad); transition: width .25s; border-radius: 2px;
+  }
+  .nav-links a:hover { color: var(--text); }
+  .nav-links a:hover::after { width: 100%; }
+
+  /* ===== Hero ===== */
+  header { padding: 96px 0 72px; perspective: 1000px; }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    border: 1px solid var(--border); background: rgba(91,140,255,.08);
+    padding: 6px 14px; border-radius: 999px; font-size: 13px; color: var(--accent-2);
+    margin-bottom: 22px;
+  }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: #34d399; animation: pulse 1.8s infinite; }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: .35; } }
+  h1 { font-size: clamp(34px, 5.5vw, 54px); line-height: 1.2; margin-bottom: 14px; }
+  h1 em {
+    font-style: normal; background: var(--accent-grad);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    background-size: 200% auto; animation: shimmer 4s linear infinite;
+  }
+  @keyframes shimmer { to { background-position: 200% center; } }
+  .hero-sub { color: var(--text-dim); font-size: 17px; max-width: 640px; margin-bottom: 30px; }
+  .hero-stats { display: flex; gap: 36px; flex-wrap: wrap; margin-bottom: 30px; }
+  .stat b { display: block; font-size: 26px; background: var(--accent-grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .stat span { font-size: 13px; color: var(--text-dim); }
+  .hero-cta { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 36px; }
+  .btn {
+    padding: 11px 24px; border-radius: 10px; font-size: 14px; text-decoration: none;
+    transition: transform .18s, box-shadow .18s; cursor: pointer; display: inline-block;
+  }
+  .btn-primary { background: var(--accent-grad); color: #06101f; font-weight: 600; }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 26px rgba(91,140,255,.35); }
+  .btn-ghost { border: 1px solid var(--border); color: var(--text); }
+  .btn-ghost:hover { background: rgba(91,140,255,.1); }
+  .skills { display: flex; flex-wrap: wrap; gap: 10px; }
+  .skill {
+    border: 1px solid var(--border); background: var(--bg-2);
+    padding: 6px 14px; border-radius: 8px; font-size: 13px; color: var(--text-dim);
+    transition: transform .2s, border-color .2s, color .2s; cursor: default;
+  }
+  .skill:hover { transform: translateY(-3px); border-color: rgba(34,211,238,.5); color: var(--accent-2); }
+
+  /* ===== 入场动画 ===== */
+  .rise { opacity: 0; transform: translateY(28px); animation: rise .8s cubic-bezier(.22,.9,.3,1) forwards; }
+  .d1 { animation-delay: .05s } .d2 { animation-delay: .18s } .d3 { animation-delay: .3s }
+  .d4 { animation-delay: .42s } .d5 { animation-delay: .55s }
+  @keyframes rise { to { opacity: 1; transform: translateY(0); } }
+
+  /* ===== 3D 悬浮立方体 ===== */
+  .cube-scene {
+    position: absolute; right: 4%; top: 90px; width: 150px; height: 150px;
+    perspective: 800px; z-index: -1; opacity: .9;
+  }
+  .cube { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; animation: spin 12s linear infinite; }
+  @keyframes spin {
+    from { transform: rotateX(-20deg) rotateY(0deg); }
+    to   { transform: rotateX(-20deg) rotateY(360deg); }
+  }
+  .cube-face {
+    position: absolute; inset: 0; border: 1.5px solid rgba(91,140,255,.55);
+    background: rgba(91,140,255,.06); backdrop-filter: blur(2px);
+    display: grid; place-items: center; font-size: 34px;
+    box-shadow: 0 0 24px rgba(91,140,255,.18) inset;
+  }
+  .cf1 { transform: translateZ(75px); } .cf2 { transform: rotateY(180deg) translateZ(75px); }
+  .cf3 { transform: rotateY(90deg) translateZ(75px); } .cf4 { transform: rotateY(-90deg) translateZ(75px); }
+  .cf5 { transform: rotateX(90deg) translateZ(75px); } .cf6 { transform: rotateX(-90deg) translateZ(75px); }
+  @media (max-width: 900px) { .cube-scene { display: none; } }
+
+  /* ===== 通用 section ===== */
+  section { padding: 56px 0; }
+  .sec-title { font-size: 26px; margin-bottom: 8px; display: flex; align-items: center; gap: 12px; }
+  .sec-title::before { content: ""; width: 6px; height: 26px; border-radius: 3px; background: var(--accent-grad); }
+  .sec-desc { color: var(--text-dim); font-size: 14px; margin-bottom: 32px; }
+
+  /* ===== 滚动渐入 ===== */
+  .reveal { opacity: 0; transform: translateY(36px); transition: opacity .7s ease, transform .7s cubic-bezier(.22,.9,.3,1); }
+  .reveal.show { opacity: 1; transform: translateY(0); }
+
+  /* ===== 项目卡片墙（3D 倾斜） ===== */
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; perspective: 1200px; }
+  .card {
+    background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 22px; cursor: pointer; position: relative; overflow: hidden;
+    transform-style: preserve-3d; will-change: transform;
+    transition: transform .15s ease-out, background .22s, border-color .22s, box-shadow .25s;
+    display: flex; flex-direction: column;
+    backdrop-filter: blur(6px);
+  }
+  .card::after {
+    content: ""; position: absolute; inset: 0; opacity: 0; transition: opacity .25s; pointer-events: none;
+    background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 0%), rgba(91,140,255,.16), transparent 45%);
+  }
+  .card:hover { border-color: rgba(91,140,255,.45); box-shadow: 0 18px 40px rgba(0,0,0,.45), 0 0 0 1px rgba(91,140,255,.2); }
+  .card:hover::after { opacity: 1; }
+  .card-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+  .card-icon {
+    width: 42px; height: 42px; border-radius: 10px; display: grid; place-items: center;
+    font-size: 20px; background: rgba(91,140,255,.14); border: 1px solid var(--border);
+    transform: translateZ(30px); transition: transform .2s;
+  }
+  .card:hover .card-icon { transform: translateZ(50px) scale(1.08); }
+  .card-year { font-size: 12px; color: var(--text-dim); }
+  .card h3 { font-size: 17px; margin-bottom: 8px; transform: translateZ(20px); }
+  .card p { color: var(--text-dim); font-size: 13.5px; flex: 1; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+  .tag { font-size: 12px; padding: 3px 10px; border-radius: 6px; background: rgba(34,211,238,.1); color: var(--accent-2); border: 1px solid rgba(34,211,238,.18); }
+  .card-more { margin-top: 14px; font-size: 13px; color: var(--accent); transform: translateZ(16px); }
+  .card:hover .card-more { animation: nudge 1s ease infinite; }
+  @keyframes nudge { 0%,100% { transform: translateZ(16px) translateX(0); } 50% { transform: translateZ(16px) translateX(5px); } }
+
+  /* ===== 时间线 ===== */
+  .timeline { position: relative; padding-left: 46px; }
+  .timeline::before { content: ""; position: absolute; left: 14px; top: 8px; bottom: 8px; width: 2px; background: linear-gradient(var(--accent), var(--accent-2), transparent); }
+  .tl-item { position: relative; padding-bottom: 34px; }
+  .tl-item:last-child { padding-bottom: 0; }
+  .tl-item::before {
+    content: attr(data-emoji);
+    position: absolute; left: -46px; top: 0; width: 30px; height: 30px;
+    display: grid; place-items: center; font-size: 15px;
+    background: var(--bg-2); border: 1.5px solid rgba(91,140,255,.45); border-radius: 50%;
+    box-shadow: 0 0 14px rgba(91,140,255,.3); z-index: 1;
+  }
+  .tl-time { font-size: 12.5px; color: var(--accent-2); letter-spacing: .5px; }
+  .tl-title { font-size: 16px; font-weight: 600; margin: 4px 0; }
+  .tl-desc { color: var(--text-dim); font-size: 13.5px; max-width: 720px; }
+
+  /* ===== 详情弹窗 ===== */
+  .modal-mask {
+    position: fixed; inset: 0; background: rgba(4, 7, 15, .72); backdrop-filter: blur(6px);
+    z-index: 100; display: none; align-items: center; justify-content: center; padding: 24px;
+  }
+  .modal-mask.open { display: flex; animation: fadeIn .2s; }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  .modal {
+    background: var(--card-hover); border: 1px solid rgba(91,140,255,.3); border-radius: 18px;
+    max-width: 680px; width: 100%; max-height: 84vh; overflow-y: auto; padding: 32px;
+    animation: pop3d .35s cubic-bezier(.22,1.2,.36,1);
+    transform-style: preserve-3d; box-shadow: 0 30px 80px rgba(0,0,0,.6);
+  }
+  @keyframes pop3d { from { transform: translateY(40px) rotateX(8deg) scale(.95); opacity: 0; } to { transform: translateY(0) rotateX(0) scale(1); opacity: 1; } }
+  .modal-close {
+    float: right; width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--border);
+    background: transparent; color: var(--text-dim); font-size: 16px; cursor: pointer; transition: all .2s;
+  }
+  .modal-close:hover { background: rgba(91,140,255,.15); color: var(--text); transform: rotate(90deg); }
+  .modal h3 { font-size: 22px; margin: 6px 0 4px; }
+  .modal .m-sub { color: var(--text-dim); font-size: 13px; margin-bottom: 20px; }
+  .modal h4 { font-size: 15px; color: var(--accent-2); margin: 20px 0 8px; }
+  .modal p, .modal li { color: var(--text-dim); font-size: 14px; }
+  .modal ul { padding-left: 20px; }
+  .modal li { margin-bottom: 6px; }
+  .modal-links { margin-top: 24px; display: flex; gap: 12px; flex-wrap: wrap; }
+
+  footer { border-top: 1px solid var(--border); padding: 32px 0; text-align: center; color: var(--text-dim); font-size: 13px; position: relative; z-index: 1; }
+  footer a { color: var(--accent); text-decoration: none; }
+
+  @media (max-width: 640px) {
+    .nav-links { display: none; }
+    header { padding: 64px 0 48px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    .rise, .reveal { opacity: 1; transform: none; }
+  }
+
+  /* ===== 顶部滚动进度条 ===== */
+  #scroll-progress {
+    position: fixed; top: 0; left: 0; height: 3px; width: 100%;
+    background: var(--accent-grad); transform-origin: 0 50%; transform: scaleX(0);
+    z-index: 300;
+  }
+
+  /* ===== 技术栈跑马灯 ===== */
+  .marquee-sec {
+    padding: 20px 0 24px; border-block: 1px solid var(--border);
+    background: rgba(15, 21, 38, .45); border-radius: 14px;
+    overflow: hidden; margin-top: 10px;
+  }
+  .mq-label {
+    font-size: 12.5px; color: var(--text-dim); letter-spacing: 1px;
+    padding: 0 26px 10px; display: flex; align-items: center; gap: 8px;
+  }
+  .marquee {
+    display: flex; gap: 14px; width: max-content;
+    animation: scrollL 42s linear infinite;
+  }
+  .marquee.rev { animation-name: scrollR; animation-duration: 50s; margin-top: 14px; }
+  .marquee:hover { animation-play-state: paused; }
+  .marquee span {
+    padding: 8px 18px; border-radius: 999px; white-space: nowrap; font-size: 13.5px;
+    border: 1px solid var(--border); background: var(--card); color: var(--text-dim);
+  }
+  .marquee span:hover { color: var(--accent-2); border-color: rgba(34,211,238,.4); }
+  @keyframes scrollL { to { transform: translateX(-50%); } }
+  @keyframes scrollR { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+
+  /* ===== 个人亮点 ===== */
+  .feat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
+  .feat {
+    background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 26px 24px; backdrop-filter: blur(6px);
+    transition: transform .25s, border-color .25s, box-shadow .25s;
+  }
+  .feat:hover { transform: translateY(-5px); border-color: rgba(91,140,255,.4); box-shadow: 0 16px 36px rgba(0,0,0,.4); }
+  .feat-icon {
+    width: 48px; height: 48px; border-radius: 12px; display: grid; place-items: center;
+    font-size: 24px; background: rgba(91,140,255,.14); border: 1px solid var(--border); margin-bottom: 14px;
+  }
+  .feat h3 { font-size: 16.5px; margin-bottom: 8px; }
+  .feat p { color: var(--text-dim); font-size: 13.5px; }
+
+  /* ===== 项目筛选器 ===== */
+  .filters { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 26px; }
+  .chip {
+    padding: 7px 18px; border-radius: 999px; border: 1px solid var(--border);
+    background: var(--bg-2); color: var(--text-dim); font-size: 13px; cursor: pointer;
+    transition: all .2s; font-family: inherit;
+  }
+  .chip:hover { color: var(--text); border-color: rgba(91,140,255,.4); transform: translateY(-1px); }
+  .chip.on { background: var(--accent-grad); color: #06101f; font-weight: 600; border-color: transparent; }
+  .card.hidden { display: none; }
+
+  /* ===== 项目卡片封面 ===== */
+  .cover {
+    height: 112px; border-radius: 10px; margin-bottom: 16px;
+    display: grid; place-items: center; position: relative; overflow: hidden;
+    transform: translateZ(24px);
+  }
+  .cover::before { content: ""; position: absolute; inset: 0; background: repeating-linear-gradient(45deg, rgba(255,255,255,.06) 0 2px, transparent 2px 16px); }
+  .cover::after { content: ""; position: absolute; width: 130px; height: 130px; border-radius: 50%; background: rgba(255,255,255,.16); filter: blur(32px); top: -46px; left: -34px; }
+  .cover-emoji { font-size: 46px; filter: drop-shadow(0 6px 12px rgba(0,0,0,.35)); transition: transform .3s; z-index: 1; }
+  .card:hover .cover-emoji { transform: scale(1.18) rotate(-8deg); }
+  .cover-num { position: absolute; right: 12px; bottom: 2px; font-size: 32px; font-weight: 800; color: rgba(255,255,255,.22); font-family: ui-monospace, monospace; z-index: 1; }
+  .cover-year {
+    position: absolute; top: 10px; right: 12px; font-size: 11.5px; padding: 2px 10px;
+    border-radius: 999px; background: rgba(255,255,255,.2); color: #fff; backdrop-filter: blur(4px); z-index: 1;
+  }
+
+  /* ===== 打字机光标 ===== */
+  .caret {
+    display: inline-block; width: 2px; height: 1.05em; background: var(--accent-2);
+    margin-left: 3px; vertical-align: -0.15em; animation: caretBlink 1s steps(1) infinite;
+  }
+  @keyframes caretBlink { 50% { opacity: 0; } }
+
+  /* ===== 返回顶部 ===== */
+  #toTop {
+    position: fixed; right: 22px; bottom: 24px; width: 46px; height: 46px;
+    border-radius: 50%; border: 1px solid var(--border); background: rgba(19,27,48,.92);
+    color: var(--text); font-size: 18px; cursor: pointer; z-index: 90;
+    opacity: 0; pointer-events: none; transition: opacity .3s, transform .25s, border-color .25s;
+    backdrop-filter: blur(8px);
+  }
+  #toTop.on { opacity: 1; pointer-events: auto; }
+  #toTop:hover { transform: translateY(-3px); border-color: rgba(91,140,255,.5); }
+
+  /* ===== 省电模式开关 ===== */
+  #eco-btn {
+    border: 1px solid var(--border); background: var(--bg-2); color: var(--text-dim);
+    width: 34px; height: 34px; border-radius: 8px; cursor: pointer; font-size: 15px;
+    transition: all .2s; flex-shrink: 0;
+  }
+  #eco-btn:hover { color: var(--text); border-color: rgba(91,140,255,.4); }
+  #eco-btn.on { background: rgba(61,220,132,.15); border-color: rgba(61,220,132,.5); color: #3ddc84; }
+
+  /* ===== 省电模式：停掉所有无限循环动画 ===== */
+  body.eco .glow, body.eco .cube-scene, body.eco .marquee, body.eco #mascot svg,
+  body.eco .caret, body.eco h1 em, body.eco .dot, body.eco #mascot .arm-r,
+  body.eco #mascot .ant, body.eco #mascot .eye, body.eco .cover-emoji {
+    animation: none !important;
+  }
+  body.eco #stars { display: none; }
+
+  /* ===== 主题切换按钮 ===== */
+  #theme-btn {
+    border: 1px solid var(--border); background: var(--bg-2); color: var(--text-dim);
+    width: 34px; height: 34px; border-radius: 8px; cursor: pointer; font-size: 15px;
+    transition: all .2s; flex-shrink: 0;
+  }
+  #theme-btn:hover { color: var(--text); border-color: rgba(91,140,255,.4); transform: rotate(15deg); }
+
+  /* ===== 浅色主题 ===== */
+  body.light {
+    --bg: #f2f5fb;
+    --bg-2: #ffffff;
+    --card: rgba(255, 255, 255, .82);
+    --card-hover: #ffffff;
+    --border: rgba(30, 64, 175, .15);
+    --text: #18223f;
+    --text-dim: #5b6785;
+  }
+  body.light nav { background: rgba(255, 255, 255, .82); }
+  body.light #stars { display: none; }                 /* 星空在浅色下隐藏，省电又不违和 */
+  body.light .glow { opacity: .16; }
+  body.light .marquee-sec { background: rgba(255, 255, 255, .65); }
+  body.light .card:hover { box-shadow: 0 18px 40px rgba(31, 45, 90, .14), 0 0 0 1px rgba(91,140,255,.25); }
+  body.light .modal { box-shadow: 0 30px 80px rgba(31, 45, 90, .22); }
+  body.light .tag { color: #0891b2; background: rgba(8, 145, 178, .08); border-color: rgba(8, 145, 178, .22); }
+  body.light .hero-badge { color: #0891b2; background: rgba(91, 140, 255, .1); }
+  body.light .tl-time { color: #0891b2; }
+  body.light .card-more { color: #3b6fe0; }
+  body.light #mascot-bubble { background: rgba(255, 255, 255, .97); border-color: rgba(59, 130, 246, .35); }
+  body.light #mascot-bubble::after { background: rgba(255, 255, 255, .97); border-color: rgba(59, 130, 246, .35); }
+  body.light #mascot { filter: drop-shadow(0 12px 20px rgba(31, 45, 90, .25)); }
+  body.light #toTop, body.light #eco-btn, body.light #theme-btn { background: rgba(255, 255, 255, .9); }
+
+  /* ===== 全部项目一览 ===== */
+  .ap-group-title {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 15px; font-weight: 600; margin: 26px 0 14px;
+  }
+  .ap-group-title:first-child { margin-top: 0; }
+  .ap-count {
+    font-size: 11.5px; font-weight: 500; padding: 1px 10px; border-radius: 999px;
+    background: rgba(91,140,255,.12); color: var(--accent); border: 1px solid var(--border);
+  }
+  .allproj-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(235px, 1fr)); gap: 12px; }
+  .allproj {
+    display: flex; gap: 10px; align-items: flex-start;
+    background: var(--card); border: 1px solid var(--border); border-radius: 11px;
+    padding: 12px 14px; backdrop-filter: blur(6px);
+    transition: transform .2s, border-color .2s, background .2s;
+  }
+  .allproj:hover { transform: translateY(-2px); border-color: rgba(91,140,255,.4); background: var(--card-hover); }
+  .allproj .ap-icon { font-size: 18px; line-height: 1.4; }
+  .allproj .ap-body { flex: 1; min-width: 0; }
+  .allproj b { display: block; font-size: 13.5px; line-height: 1.4; }
+  .allproj span { display: block; font-size: 12px; color: var(--text-dim); line-height: 1.45; margin-top: 2px; }
+  .ap-badge {
+    display: inline-block; margin-left: 6px; font-size: 10px; font-weight: 600;
+    padding: 0 6px; border-radius: 5px; vertical-align: 1px;
+    background: rgba(61,220,132,.14); color: #22b365; border: 1px solid rgba(61,220,132,.3);
+  }
+</style>
+</head>
+<body>
+<canvas id="stars"></canvas>
+<div id="scroll-progress"></div>
+<div class="glow glow-1"></div>
+<div class="glow glow-2"></div>
+<div class="glow glow-3"></div>
+
+<nav>
+  <div class="nav-inner">
+    <div class="logo">Tian<em>Gaolin</em>.dev</div>
+    <div style="display:flex;align-items:center;gap:18px">
+      <div class="nav-links">
+        <a href="#projects">项目作品</a>
+        <a href="#experience">经历</a>
+        <a href="#contact">联系我</a>
+      </div>
+      <button id="theme-btn" title="切换深色 / 浅色主题">☀️</button>
+      <button id="eco-btn" title="省电模式：暂停循环动画，降低 CPU/GPU 占用">⚡</button>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+  <!-- ============ 个人简介区 ============ -->
+  <header>
+    <div class="cube-scene rise d4" aria-hidden="true">
+      <div class="cube">
+        <div class="cube-face cf1">🤖</div><div class="cube-face cf2">🚗</div>
+        <div class="cube-face cf3">📱</div><div class="cube-face cf4">🧩</div>
+        <div class="cube-face cf5">🛠️</div><div class="cube-face cf6">✨</div>
+      </div>
+    </div>
+    <div class="hero-badge rise d1"><span class="dot"></span>11 年经验 · 正在寻找新机会 · 坐标北京</div>
+    <h1 class="rise d2">你好，我是<em>田高琳</em><br>一名深耕移动端的<em>Android 开发工程师</em></h1>
+    <p class="hero-sub rise d3"><span id="typewrite"></span><span class="caret"></span></p>
+    <div class="hero-stats rise d4">
+      <div class="stat"><b data-n="11" data-suffix=" 年">11 年</b><span>移动端开发经验</span></div>
+      <div class="stat"><b data-n="20" data-suffix="+">20+</b><span>交付项目</span></div>
+      <div class="stat"><b data-n="3">3</b><span>大厂合作 · 字节/快手/京东</span></div>
+      <div class="stat"><b>0-1</b><span>独立交付全流程</span></div>
+    </div>
+    <div class="hero-cta rise d4">
+      <a class="btn btn-primary" href="#projects">查看项目作品 ↓</a>
+      <a class="btn btn-ghost" href="https://github.com/Sincerly" target="_blank" rel="noopener">⭐ GitHub</a>
+      <a class="btn btn-ghost" href="mailto:1475590636@qq.com">联系我</a>
+    </div>
+    <div class="skills rise d5">
+      <span class="skill">Java</span><span class="skill">Kotlin</span><span class="skill">Flutter</span>
+      <span class="skill">React Native</span><span class="skill">MVVM / MVI</span><span class="skill">Jetpack</span>
+      <span class="skill">协程</span><span class="skill">AIDL 跨进程</span><span class="skill">插件化</span>
+      <span class="skill">MQTT / 蓝牙 / 串口</span><span class="skill">音视频 / IM</span><span class="skill">AI 提效工作流</span>
+    </div>
+  </header>
+
+  <!-- ============ 技术栈跑马灯 ============ -->
+  <section class="marquee-sec">
+    <div class="mq-label">🧱 语言与架构</div>
+    <div class="marquee" id="mq1"></div>
+    <div class="mq-label" style="margin-top:16px">🔌 通信 · SDK · 效率工具</div>
+    <div class="marquee rev" id="mq2"></div>
+  </section>
+
+  <!-- ============ 个人亮点 ============ -->
+  <section id="highlights">
+    <h2 class="sec-title reveal">个人亮点</h2>
+    <p class="sec-desc reveal">除了写代码，我还能带来什么。</p>
+    <div class="feat-grid">
+      <div class="feat reveal">
+        <div class="feat-icon">🚀</div>
+        <h3>0-1 独立交付</h3>
+        <p>多个项目从需求分析、架构设计到上线运营独立完成——快递柜、点餐机、高铁广告机、报价 APP 均为个人全流程交付。</p>
+      </div>
+      <div class="feat reveal">
+        <div class="feat-icon">🏢</div>
+        <h3>大厂协作经验</h3>
+        <p>字节跳动、快手、京东多项目并行迭代，适应高强度发布节奏与严格的工程规范，线上问题响应迅速。</p>
+      </div>
+      <div class="feat reveal">
+        <div class="feat-icon">🤖</div>
+        <h3>AI 研发提效</h3>
+        <p>熟练运用 TREA + Cursor + Coze 构建多 Agent 研发工作流，可编写 SKILLS、完成模型调参，研发效率成倍提升。</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 项目卡片墙 ============ -->
+  <section id="projects">
+    <h2 class="sec-title reveal">项目作品</h2>
+    <p class="sec-desc reveal">覆盖大厂合作项目、IOT 智能硬件、AI 应用与独立交付产品，点击卡片查看详情。</p>
+    <div class="filters reveal" id="filters"></div>
+    <div class="grid" id="project-grid"><!-- 由 JS 渲染 --></div>
+
+    <!-- ============ 全部项目一览 ============ -->
+    <div style="margin-top:56px">
+      <h2 class="sec-title reveal">全部项目一览</h2>
+      <p class="sec-desc reveal">26 个商业项目 + 4 个个人项目，覆盖电商、社交、音视频、IOT 智能硬件、企业级应用等领域。</p>
+      <div class="reveal">
+        <div class="ap-group-title">💼 公司项目 <span class="ap-count">26 个</span></div>
+        <div class="allproj-grid" id="all-projects"></div>
+        <div class="ap-group-title" style="margin-top:34px">🚀 个人项目 <span class="ap-count">4 个</span></div>
+        <div class="allproj-grid" id="personal-projects"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 经历时间线 ============ -->
+  <section id="experience">
+    <h2 class="sec-title reveal">工作与教育经历</h2>
+    <p class="sec-desc reveal">按时间倒序排列。</p>
+    <div class="timeline">
+      <div class="tl-item reveal" data-emoji="🚗">
+        <div class="tl-time">2026.01 — 至今</div>
+        <div class="tl-title">软通动力信息技术（集团）股份有限公司（外派字节跳动）· Android 开发</div>
+        <div class="tl-desc">参与字节跳动车载 App 的功能验证与开发，主要负责多媒体功能模块。</div>
+      </div>
+      <div class="tl-item reveal" data-emoji="🤖">
+        <div class="tl-time">2024.12 — 2025.09</div>
+        <div class="tl-title">博彦科技承德有限公司（外派快手）· Android 开发</div>
+        <div class="tl-desc">参与可灵 AI（海内外 AI 创作应用）功能设计与优化，负责商业化（会员/徽章体系）与社区（创意圈/推荐大卡）方向。</div>
+      </div>
+      <div class="tl-item reveal" data-emoji="🏢">
+        <div class="tl-time">2024.05 — 2024.09</div>
+        <div class="tl-title">人瑞科技（外派京东）· Android 开发</div>
+        <div class="tl-desc">负责京东开放平台 API 与 OA 应用（京ME）的功能迭代，参与 API 体系建设与鉴权机制设计。</div>
+      </div>
+      <div class="tl-item reveal" data-emoji="🚄">
+        <div class="tl-time">2022.03 — 2024.01</div>
+        <div class="tl-title">北京锐博智安科技有限公司 · Android 开发</div>
+        <div class="tl-desc">负责 Android 机车产品开发（DT50 火车终端等轨道交通辅助软件），持续跟进线上问题修复。</div>
+      </div>
+      <div class="tl-item reveal" data-emoji="🧰">
+        <div class="tl-time">2018.02 — 2022.03</div>
+        <div class="tl-title">河南亿生信软件科技有限公司 · Android 开发 / 组内协调</div>
+        <div class="tl-desc">负责新项目开发与二期迭代，Android 组工作协调，参与需求分析与可行性评估。交付 IOT、广告机、快递柜、点餐机、音视频等多领域项目。</div>
+      </div>
+      <div class="tl-item reveal" data-emoji="🌱">
+        <div class="tl-time">2016.03 — 2018.02</div>
+        <div class="tl-title">郑州豆丁网络科技 · Android 开发</div>
+        <div class="tl-desc">负责 Android 端功能跟进与线上问题定位修复，参与需求分析与实现方案设计。</div>
+      </div>
+      <div class="tl-item reveal" data-emoji="🎓">
+        <div class="tl-time">2013.09 — 2016.06</div>
+        <div class="tl-title">漯河职业技术学院 · 计算机网络技术（大专）</div>
+        <div class="tl-desc">系统学习计算机网络与软件开发基础。</div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<button id="toTop" title="回到顶部">↑</button>
+
+<footer id="contact">
+  <p>📮 邮箱：<a href="mailto:1475590636@qq.com">1475590636@qq.com</a> &nbsp;·&nbsp; 📱 电话：15290123029 &nbsp;·&nbsp; 📍 北京 &nbsp;·&nbsp; 🔗 GitHub：<a href="https://github.com/Sincerly" target="_blank" rel="noopener">github.com/Sincerly</a></p>
+  <p style="margin-top:8px">© 2026 田高琳 · 用 ❤️ 和代码构建</p>
+</footer>
+
+<!-- ============ 项目详情弹窗 ============ -->
+<div class="modal-mask" id="modal-mask">
+  <div class="modal" id="modal-box">
+    <button class="modal-close" id="modal-close">✕</button>
+    <div class="card-icon" id="m-icon" style="margin-bottom:14px">🚀</div>
+    <h3 id="m-title"></h3>
+    <div class="m-sub" id="m-sub"></div>
+    <h4>📌 项目背景</h4><p id="m-bg"></p>
+    <h4>👤 我的职责</h4><ul id="m-duty"></ul>
+    <h4>⚡ 难点与亮点</h4><ul id="m-light"></ul>
+    <h4>📈 项目成果</h4><p id="m-result"></p>
+    <div class="modal-links" id="m-links"></div>
+  </div>
+</div>
+
+<script>
+/* ================================================================
+   ★ 项目数据：如需调整，直接修改 PROJECTS 数组即可 ★
+================================================================ */
+const PROJECTS = [
+  {
+    icon: "🚗",
+    name: "字节跳动车载任务 APP",
+    year: "2026",
+    brief: "车载场景任务应用，接收用户指令控制车辆执行相应动作，负责多媒体核心模块。",
+    tags: ["Android", "车载", "多媒体", "字节跳动"],
+    sub: "软通动力（外派字节跳动）· 2026.01 至今 · 多媒体模块",
+    bg: "一款应用于车载环境的任务 APP，用户通过下发指令控制车辆做出相应动作。车载场景对稳定性、响应速度和交互体验要求极高。",
+    duty: [
+      "负责多媒体功能模块的设计与开发",
+      "负责录音纪要模块的开发与问题修复",
+      "参与车载 App 的功能验证与线上问题跟进"
+    ],
+    light: [
+      "在车载复杂软硬件环境下保障多媒体链路稳定运行",
+      "完成录音纪要功能在车载端的完整落地"
+    ],
+    result: "多媒体与录音纪要模块稳定交付，支撑车载场景核心交互体验。",
+    links: []
+  },
+  {
+    icon: "🤖",
+    name: "可灵 AI（快手）",
+    year: "2024",
+    brief: "海内外知名 AI 创作应用：文生图、图生视频、多模态生成，会员/包月付费模式。",
+    tags: ["Android", "AI 应用", "会员体系", "社区"],
+    sub: "博彦科技（外派快手）· 2024.12 — 2025.08 · 商业化 + 社区",
+    bg: "可灵 AI 是快手旗下海内外知名的互联网大模型应用，核心能力包括文生图、图生视频、多模态生成等图片视频 AI 处理工具，用户可通过年会员或包月付费使用。",
+    duty: [
+      "参与可灵 AI 基于业务需求的功能设计与优化",
+      "负责商业化方向：会员体系、徽章体系的功能实现",
+      "负责社区方向：创意圈、推荐大卡等功能开发"
+    ],
+    light: [
+      "深度参与头部 AI 应用的商业化与社区功能迭代",
+      "在海内外双版本并行的节奏下持续跟进并修复线上问题"
+    ],
+    result: "支撑可灵 AI 商业化与社区功能稳定迭代，保障海内外版本线上体验。",
+    links: []
+  },
+  {
+    icon: "🏢",
+    name: "京 ME + 京东开放平台",
+    year: "2024",
+    brief: "京东办公 OA 系统与开放平台 API 体系建设，主导接口规范与鉴权机制设计。",
+    tags: ["Android", "API 设计", "鉴权", "OA"],
+    sub: "人瑞科技（外派京东）· 2024.05 — 2024.10 · 开放平台",
+    bg: "京ME 是京东集团办公 OA 系统；开放平台面向企业应用开放基础 API 能力，需要建设规范的接口体系支撑生态接入。",
+    duty: [
+      "参与京东办公 OA 应用基于业务需求的设计与功能优化",
+      "参与开放平台 API 体系建设，主导基础能力接口的设计与开发",
+      "制定 API 接入规范与鉴权机制，完成接口文档标准化输出"
+    ],
+    light: [
+      "主导开放平台基础能力接口设计，沉淀标准化接入规范",
+      "建立鉴权机制，保障企业应用接入安全"
+    ],
+    result: "完成开放平台 API 体系与文档标准化，支撑京ME 与企业应用的持续迭代。",
+    links: []
+  },
+  {
+    icon: "🚄",
+    name: "DT50 火车终端",
+    year: "2022",
+    brief: "轨道交通行业火车驾驶室辅助软件：实时显示速度/信号/位置，TTS 播报 + 实时监控。",
+    tags: ["Android", "轨道交通", "TTS", "多尺寸适配"],
+    sub: "北京锐博智安 · 2022.03 — 2024.01 · 变体版本维护",
+    bg: "面向轨道交通行业的火车驾驶室辅助软件，实时显示机车速度、前方灯、前车、车站、位置等运行属性，具备 TTS 播报、doc 文库、实时摄像头监控能力。",
+    duty: [
+      "负责新功能迭代开发",
+      "负责 7 / 10 / 11 寸三种尺寸设备变体版本的功能开发与维护",
+      "持续跟进线上问题修复"
+    ],
+    light: [
+      "一套代码适配三种屏幕尺寸的变体版本体系",
+      "TTS 语音播报在驾驶舱嘈杂环境下的可靠落地"
+    ],
+    result: "产品稳定运行于轨道交通场景，多尺寸变体版本持续按需交付。",
+    links: []
+  },
+  {
+    icon: "💼",
+    name: "项目报价 APP",
+    year: "2022",
+    brief: "Flutter 跨端报价工具：项目报价 / 推荐 / 管理 / 收藏 / IM 交流，独立完成。",
+    tags: ["Flutter", "GetX", "MVVM", "Dio"],
+    sub: "北京锐博智安 · 2022.08 — 2022.12 · Flutter 跨端",
+    bg: "一款项目报价辅助工具 APP，包含项目报价、项目推荐、项目管理、收藏、周边软件、IM 交流等模块，帮助用户对项目进行评估与报价。",
+    duty: [
+      "使用 Flutter 独立完成 APP 开发",
+      "基于 GetX + ScreenUtil + Dio + permission_handler 搭建 MVVM 架构"
+    ],
+    light: [
+      "Flutter 跨端方案一次开发双端交付",
+      "GetX 状态管理 + MVVM 分层的工程化实践"
+    ],
+    result: "跨端应用如期交付，覆盖报价评估全流程与 IM 沟通场景。",
+    links: []
+  },
+  {
+    icon: "📚",
+    name: "学习魔盒（双端）",
+    year: "2021",
+    brief: "远程在线视频教学平台：学生端下单、教师端抢单、按分钟计费的实时视频课堂。",
+    tags: ["Android", "音视频", "双端", "计费"],
+    sub: "河南亿生信 · 2021.03 — 2021.12 · 教师端 + 学生端",
+    bg: "一款远程视频在线教学应用，分为教师端和学生端两个端：学生端下单，教师端抢单，随后进行实时视频通讯，通话按分钟计费。",
+    duty: [
+      "负责教师端、学生端两个端的功能开发",
+      "实现视频通讯与按分钟计费的核心链路"
+    ],
+    light: [
+      "实时音视频通话 + 精确到分钟的计费体系",
+      "抢单撮合模式下双端状态同步"
+    ],
+    result: "双端产品完整交付，支撑在线教学撮合与计费闭环。",
+    links: []
+  },
+  {
+    icon: "📦",
+    name: "心甜智能快递柜",
+    year: "2019",
+    brief: "IOT 物联网快递柜：定制 ROM 大屏，取件/投件/暂存/广告，独立开发。",
+    tags: ["IOT", "串口通信", "Socket", "定制 ROM"],
+    sub: "河南亿生信 · 2019.02 — 2019.03 · 独立开发",
+    bg: "物联网方向的智能快递柜项目，柜体大屏幕是定制化 ROM 的 Android 系统，开放 root 权限可执行 shell 命令，支持取件、投件、暂存件、图片视频广告等功能。",
+    duty: [
+      "独立完成整个项目从 0 到 1 的开发",
+      "负责与硬件相关的串口通信、Socket 通讯链路"
+    ],
+    light: [
+      "基于 root 权限的 shell 命令控制与开机自启动",
+      "Watchdog 进程保活，保障 7x24 小时不间断运行",
+      "MVP 架构 + 串口通信的软硬件结合实践"
+    ],
+    result: "独立交付的 IOT 设备项目，实现快递柜全业务流程稳定运行。",
+    links: []
+  },
+  {
+    icon: "🍚",
+    name: "校园点餐机",
+    year: "2019",
+    brief: "校园食堂点餐设备：双屏异显 + 双目摄像头人脸识别 + 社保卡刷卡，支持离线交易。",
+    tags: ["人脸识别", "双屏异显", "串口", "离线同步"],
+    sub: "河南亿生信 · 2019.08 — 2019.11 · 独立开发",
+    bg: "面向高中/初中校园食堂的点餐设备，双屏异显 + 双目摄像头，可离线工作、联网后数据同步；刷社保卡消费，本地数据库记录正负交易并上报。",
+    duty: [
+      "独立完成整个项目开发",
+      "实现人脸识别录入、社保卡绑定/挂失/解挂、点餐模式配置等功能"
+    ],
+    light: [
+      "离线正负交易 + 本地数据库存储 + 联网同步的可靠交易设计",
+      "通过串口读取社保卡 / 身份证信息",
+      "双屏异显适配点餐设备的双屏硬件形态"
+    ],
+    result: "设备落地校园食堂场景，独立交付人脸识别 + 社保卡支付完整方案。",
+    links: []
+  },
+  {
+    icon: "📺",
+    name: "高铁广告机",
+    year: "2019",
+    brief: "捷安高科高铁广告机：图片/视频/图文多形态播放，Web 端 Socket 下发远程控制。",
+    tags: ["Socket", "多媒体", "远程控制", "独立开发"],
+    sub: "河南亿生信（捷安高科项目）· 2019.05 — 2019.07 · 独立开发",
+    bg: "为捷安高科公司打造的高铁广告机，支持图片、视频、图文多种展现形式，通过加载预置在文件管理中的媒体内容进行播放，Web 管理端可远程控制。",
+    duty: [
+      "独立完成整个项目开发",
+      "实现 Socket 通道接收 Web 管理端下发指令"
+    ],
+    light: [
+      "Socket 远程指令控制：广告暂停 / 播放 / 切换 / 删除 / 更新数据与配置文件",
+      "配置文件驱动的媒体内容管理方案"
+    ],
+    result: "独立交付并部署于高铁场景，实现广告内容远程集中管控。",
+    links: []
+  }
+];
+
+/* 项目分类（用于筛选器）：与 PROJECTS 顺序一一对应 */
+const CATS = [
+  ["大厂", "车载"],
+  ["大厂", "AI"],
+  ["大厂"],
+  ["智能硬件"],
+  ["独立交付", "跨端"],
+  ["移动应用"],
+  ["智能硬件", "独立交付"],
+  ["智能硬件", "独立交付"],
+  ["智能硬件", "独立交付"]
+];
+
+/* 卡片封面渐变配色（与 PROJECTS 顺序对应） */
+const PALETTES = [
+  ["#2563eb", "#22d3ee"], ["#7c3aed", "#ec4899"], ["#0ea5e9", "#6366f1"],
+  ["#059669", "#84cc16"], ["#f59e0b", "#ef4444"], ["#8b5cf6", "#22d3ee"],
+  ["#14b8a6", "#3ddc84"], ["#f97316", "#facc15"], ["#e11d48", "#7c3aed"]
+];
+
+/* ---------- 渲染项目卡片墙（含 3D 倾斜跟随） ---------- */
+const grid = document.getElementById("project-grid");
+const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+PROJECTS.forEach((p, i) => {
+  const card = document.createElement("div");
+  card.className = "card reveal";
+  card.style.transitionDelay = (i % 3) * 90 + "ms";
+  card.dataset.cat = (CATS[i] || []).join("|");
+  const [c1, c2] = PALETTES[i % PALETTES.length];
+  card.innerHTML = `
+    <div class="cover" style="background:linear-gradient(120deg, ${c1}, ${c2})">
+      <span class="cover-emoji">${p.icon}</span>
+      <span class="cover-num">${String(i + 1).padStart(2, "0")}</span>
+      <span class="cover-year">${p.year}</span>
+    </div>
+    <h3>${p.name}</h3>
+    <p>${p.brief}</p>
+    <div class="tags">${p.tags.map(t => `<span class="tag">${t}</span>`).join("")}</div>
+    <div class="card-more">查看详情 →</div>`;
+  grid.appendChild(card);
+
+  if (!reduceMotion) {
+    card.addEventListener("mousemove", e => {
+      const r = card.getBoundingClientRect();
+      const x = e.clientX - r.left, y = e.clientY - r.top;
+      const rx = ((y / r.height) - .5) * -10;
+      const ry = ((x / r.width) - .5) * 12;
+      card.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg) translateY(-4px)`;
+      card.style.setProperty("--mx", x + "px");
+      card.style.setProperty("--my", y + "px");
+    });
+    card.addEventListener("mouseleave", () => {
+      card.style.transition = "transform .5s cubic-bezier(.22,.9,.3,1), background .22s, border-color .22s";
+      card.style.transform = "";
+      setTimeout(() => card.style.transition = "", 500);
+    });
+  }
+  card.addEventListener("click", () => openModal(i));
+});
+
+/* ---------- 详情弹窗 ---------- */
+const mask = document.getElementById("modal-mask");
+function openModal(i) {
+  const p = PROJECTS[i];
+  document.getElementById("m-icon").textContent = p.icon;
+  document.getElementById("m-title").textContent = p.name;
+  document.getElementById("m-sub").textContent = p.sub;
+  document.getElementById("m-bg").textContent = p.bg;
+  document.getElementById("m-duty").innerHTML = p.duty.map(d => `<li>${d}</li>`).join("");
+  document.getElementById("m-light").innerHTML = p.light.map(d => `<li>${d}</li>`).join("");
+  document.getElementById("m-result").textContent = p.result;
+  const links = document.getElementById("m-links");
+  links.innerHTML = p.links.map(l => `<a class="btn btn-ghost" href="${l.url}" target="_blank">${l.label}</a>`).join("");
+  links.style.display = p.links.length ? "flex" : "none";
+  mask.classList.add("open");
+  document.body.style.overflow = "hidden";
+}
+function closeModal() {
+  mask.classList.remove("open");
+  document.body.style.overflow = "";
+}
+document.getElementById("modal-close").addEventListener("click", closeModal);
+mask.addEventListener("click", e => { if (e.target === mask) closeModal(); });
+document.addEventListener("keydown", e => { if (e.key === "Escape") closeModal(); });
+
+/* ---------- 滚动渐入 ---------- */
+const io = new IntersectionObserver(entries => {
+  entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add("show"); io.unobserve(en.target); } });
+}, { threshold: .12 });
+document.querySelectorAll(".reveal").forEach(el => io.observe(el));
+
+/* ---------- 全部项目一览 ---------- */
+const ALL_PROJECTS = [
+  ["🛵", "来乐商城 + 来乐速递", "同城电商 + 配送平台，覆盖骑手端 / 用户端 / 商家端：在线商城、帮买、帮送", ""],
+  ["💡", "智慧灯光控制系统", "IoT 智慧灯光控制应用", ""],
+  ["📈", "智慧运维 · 展示报表", "运维数据可视化与 H5 交互报表", ""],
+  ["🛍️", "哇群代购端 / 哇群用户端", "代购电商平台，代购端与用户端双端开发", ""],
+  ["🎙️", "砰砰语聊", "语音社交聊天应用", ""],
+  ["💬", "火阳 APP", "即时通讯应用", ""],
+  ["🖥️", "身份通网吧系统", "网吧实名身份与终端管理系统", ""],
+  ["⚙️", "钰欣机械", "机械行业企业级应用", ""],
+  ["🐷", "猪猪领养", "在线养殖认领平台，RTSP 拉流实时查看养殖监控", "独立"],
+  ["🌾", "农夫商城", "农产品电商商城", ""],
+  ["🚉", "中铁 APP", "中铁相关企业级应用", ""],
+  ["📦", "新甜智能快递柜", "IOT 快递柜大屏端：取件 / 投件 / 广告，定制 ROM + 串口通信", "独立"],
+  ["📺", "高铁广告机", "高铁广告终端，Web 端 Socket 远程管控播放内容", "独立"],
+  ["🏃", "赛客马拉松", "马拉松 RFID 自动打卡系统，RS232 串口数据采集上报", "独立"],
+  ["📷", "监控", "视频监控类应用", ""],
+  ["🏥", "医院调查问卷", "郑大一附院就医前问卷 PAD 端，数据汇总导出 Excel", "独立"],
+  ["📚", "学习魔盒", "远程视频教学双端：学生下单、教师抢单、按分钟计费", ""],
+  ["🔧", "小牛邦邦", "汽配商城 + 新能源学习平台：课程、短视频、即时通讯", "独立"],
+  ["💰", "挣点呗", "网赚任务平台：接任务得佣金，集成小游戏 / 广告 SDK", ""],
+  ["💼", "项目报价 APP", "Flutter 报价工具：报价 / 推荐 / 管理 / IM 交流", ""],
+  ["📡", "直播", "直播类应用", ""],
+  ["🚄", "DT50 火车终端", "轨道交通驾驶室辅助软件：实时显示机车状态 + TTS 播报", ""],
+  ["🏢", "京ME + 开放平台", "京东办公 OA 与开放平台 API 体系建设", ""],
+  ["🤖", "可灵 AI + Doteon", "快手 AI 创作应用：会员体系、徽章体系、创意圈", ""],
+  ["🚗", "字节跳动车载任务 APP", "车载场景任务应用，负责多媒体与录音纪要模块", ""],
+  ["🎧", "Meeto 录音", "录音 / 纪要类应用", ""]
+];
+const PERSONAL_PROJECTS = [
+  ["🚁", "大疆无人机", "基于大疆 SDK 的无人机应用开发", ""],
+  ["💺", "智能按摩椅", "按摩椅 IoT 智能控制端", ""],
+  ["🚙", "汽车声浪网关", "车载声浪音频网关开发", ""],
+  ["🏭", "新甜厂家生产端", "快递柜厂家生产管理端", ""]
+];
+function renderAllProjects(listId, data) {
+  const box = document.getElementById(listId);
+  if (!box) return;
+  box.innerHTML = data.map(([icon, name, desc, badge]) => `
+    <div class="allproj">
+      <div class="ap-icon">${icon}</div>
+      <div class="ap-body">
+        <b>${name}${badge ? `<span class="ap-badge">独立开发</span>` : ""}</b>
+        <span>${desc}</span>
+      </div>
+    </div>`).join("");
+}
+renderAllProjects("all-projects", ALL_PROJECTS);
+renderAllProjects("personal-projects", PERSONAL_PROJECTS);
+
+/* ---------- 项目筛选器 ---------- */
+const FILTERS = [["全部", ""], ["大厂合作", "大厂"], ["AI 应用", "AI"], ["智能硬件", "智能硬件"], ["独立交付", "独立交付"]];
+const filtersEl = document.getElementById("filters");
+FILTERS.forEach(([label, key], idx) => {
+  const c = document.createElement("button");
+  c.className = "chip" + (idx === 0 ? " on" : "");
+  c.textContent = label;
+  c.addEventListener("click", () => {
+    filtersEl.querySelectorAll(".chip").forEach(x => x.classList.remove("on"));
+    c.classList.add("on");
+    document.querySelectorAll("#project-grid .card").forEach(card => {
+      const cats = (card.dataset.cat || "").split("|");
+      const show = !key || cats.includes(key);
+      card.classList.toggle("hidden", !show);
+      if (show) card.classList.add("show");
+    });
+  });
+  filtersEl.appendChild(c);
+});
+
+/* ---------- 技术栈跑马灯（分类展示） ---------- */
+const TECH_LANG = ["Java", "Kotlin", "Flutter", "React Native", "Jetpack", "协程 Flow", "MVVM / MVP / MVI", "Retrofit", "OkHttp3", "Room", "Glide", "AIDL 跨进程", "插件化", "热更新", "APT / DSL / AST"];
+const TECH_SDK = ["MQTT", "蓝牙 BLE", "串口通信", "TCP / UDP / Socket", "聚合支付", "地图定位", "人脸识别", "语音合成 / 识别", "OCR", "IM / RTC", "短视频 SDK", "推送 SDK", "广告变现", "Umeng 埋点", "MySQL", "Python 工具链", "TREA + Cursor + Coze"];
+["mq1", "mq2"].forEach((id, r) => {
+  const box = document.getElementById(id);
+  if (!box) return;
+  const list = r === 0 ? TECH_LANG : TECH_SDK;
+  const html = list.map(t => `<span>${t}</span>`).join("");
+  box.innerHTML = html + html; /* 内容复制一份，实现无缝循环 */
+});
+
+/* ---------- Hero 副标题打字机 ---------- */
+const TYPE_TEXT = "10 年 Android 原生开发 + 2 年团队管理经验，精通 Java/Kotlin，掌握 Flutter、RN 跨端开发。从车载系统、IOT 硬件交互到 AI 大模型应用，具备项目 0-1 独立交付全流程能力，熟练借助 AI 工具链（TREA + Cursor + Coze 多 Agent 工作流）提升研发效率。";
+(function type() {
+  const tw = document.getElementById("typewrite");
+  if (!tw) return;
+  if (reduceMotion) { tw.textContent = TYPE_TEXT; return; }
+  let k = 0;
+  (function tick() {
+    tw.textContent = TYPE_TEXT.slice(0, k);
+    if (k++ <= TYPE_TEXT.length) setTimeout(tick, 30);
+  })();
+})();
+
+/* ---------- 数字滚动统计 ---------- */
+document.querySelectorAll(".stat b[data-n]").forEach((el, idx) => {
+  const target = +el.dataset.n, suffix = el.dataset.suffix || "";
+  const t0 = performance.now() + 500 + idx * 150;
+  function step(t) {
+    const p = Math.min(1, Math.max(0, (t - t0) / 1100));
+    const eased = 1 - Math.pow(1 - p, 3);
+    el.textContent = Math.round(target * eased) + suffix;
+    if (p < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+});
+
+/* ---------- 滚动进度条 + 返回顶部 ---------- */
+const prog = document.getElementById("scroll-progress");
+const toTop = document.getElementById("toTop");
+addEventListener("scroll", () => {
+  const h = document.documentElement;
+  const ratio = h.scrollTop / Math.max(1, h.scrollHeight - h.clientHeight);
+  prog.style.transform = "scaleX(" + ratio + ")";
+  toTop.classList.toggle("on", h.scrollTop > 600);
+}, { passive: true });
+toTop.addEventListener("click", () => scrollTo({ top: 0, behavior: "smooth" }));
+
+/* ---------- 主题切换（深色 / 浅色） ---------- */
+const themeBtn = document.getElementById("theme-btn");
+function applyTheme(light) {
+  document.body.classList.toggle("light", light);
+  if (themeBtn) themeBtn.textContent = light ? "🌙" : "☀️";
+  localStorage.setItem("theme", light ? "light" : "dark");
+  dispatchEvent(new Event("themechange"));
+}
+if (themeBtn) {
+  themeBtn.addEventListener("click", () => applyTheme(!document.body.classList.contains("light")));
+  if (localStorage.getItem("theme") === "light") applyTheme(true);
+}
+
+/* ---------- 省电模式开关 ---------- */
+const ecoBtn = document.getElementById("eco-btn");
+function applyEco(on) {
+  document.body.classList.toggle("eco", on);
+  if (ecoBtn) ecoBtn.classList.toggle("on", on);
+  localStorage.setItem("eco-mode", on ? "1" : "0");
+  dispatchEvent(new Event("ecochange"));
+}
+if (ecoBtn) {
+  ecoBtn.addEventListener("click", () => applyEco(!document.body.classList.contains("eco")));
+  if (localStorage.getItem("eco-mode") === "1") applyEco(true);
+}
+
+/* ---------- 跑马灯滚出视野自动暂停 ---------- */
+const mqIO = new IntersectionObserver(entries => entries.forEach(en => {
+  if (!document.body.classList.contains("eco")) {
+    en.target.style.animationPlayState = en.isIntersecting ? "running" : "paused";
+  }
+}), { threshold: 0 });
+document.querySelectorAll(".marquee").forEach(m => mqIO.observe(m));
+
+/* ---------- 3D 粒子星空（自定义 3D 投影，无外部依赖） ---------- */
+(function starfield() {
+  if (reduceMotion || document.body.classList.contains("eco") || document.body.classList.contains("light")) return;
+  const canvas = document.getElementById("stars");
+  const ctx = canvas.getContext("2d");
+  let W, H, stars = [];
+  const N = 110; /* 粒子数量从 160 降至 110，减少每帧计算量 */
+  function resize() {
+    W = canvas.width = innerWidth; H = canvas.height = innerHeight;
+  }
+  function init() {
+    stars = Array.from({ length: N }, () => ({
+      x: (Math.random() - .5) * 2000,
+      y: (Math.random() - .5) * 2000,
+      z: Math.random() * 1800 + 200,
+      r: Math.random() * 1.4 + .4,
+      hue: Math.random() > .8 ? "34,211,238" : "139,158,255"
+    }));
+  }
+  let mx = 0, my = 0, tmx = 0, tmy = 0;
+  addEventListener("mousemove", e => {
+    tmx = (e.clientX / innerWidth - .5); tmy = (e.clientY / innerHeight - .5);
+  });
+  let rafId = null, lastFrame = 0;
+  function tick(t) {
+    rafId = requestAnimationFrame(tick);
+    if (t - lastFrame < 33) return; /* 锁 30fps：人眼几乎无感，GPU 负载减半 */
+    lastFrame = t;
+    mx += (tmx - mx) * .04; my += (tmy - my) * .04;
+    ctx.clearRect(0, 0, W, H);
+    const cx = W / 2 + mx * 60, cy = H / 2 + my * 60;
+    for (const s of stars) {
+      s.z -= 2.2;
+      if (s.z < 100) { s.z = 2000; s.x = (Math.random() - .5) * 2000; s.y = (Math.random() - .5) * 2000; }
+      const k = 400 / s.z;
+      const px = cx + s.x * k, py = cy + s.y * k;
+      if (px < -20 || px > W + 20 || py < -20 || py > H + 20) continue;
+      const size = s.r * k * 1.6;
+      const alpha = Math.min(1, (2000 - s.z) / 2000) * .9;
+      ctx.beginPath();
+      ctx.fillStyle = `rgba(${s.hue},${alpha})`;
+      ctx.arc(px, py, Math.max(size, .3), 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+  function start() { if (rafId === null) { lastFrame = 0; rafId = requestAnimationFrame(tick); } }
+  function stop() { if (rafId !== null) { cancelAnimationFrame(rafId); rafId = null; } }
+  resize(); init(); start();
+  addEventListener("resize", resize);
+  /* 切到后台标签页时暂停绘制，回来再恢复 */
+  document.addEventListener("visibilitychange", () => document.hidden ? stop() : start());
+  /* 省电模式开启时彻底停止 */
+  addEventListener("ecochange", () => document.body.classList.contains("eco") ? stop() : (rafId === null && start()));
+  /* 浅色主题下不绘制星空（CSS 已隐藏 canvas） */
+  addEventListener("themechange", () => {
+    if (document.body.classList.contains("light")) stop();
+    else if (!document.body.classList.contains("eco") && rafId === null) start();
+  });
+})();
+</script>
+<!-- ============ 安卓小人看板娘 ============ -->
+<style>
+  /* ===== 安卓小人（纯自绘 SVG，无外部依赖，100% 稳定） ===== */
+  #mascot {
+    position: fixed; left: 16px; bottom: 0; z-index: 210;
+    width: 150px; cursor: pointer; user-select: none;
+    filter: drop-shadow(0 12px 26px rgba(0,0,0,.5));
+    transition: transform .25s;
+  }
+  #mascot:hover { transform: scale(1.06); }
+  #mascot svg { display: block; overflow: visible; animation: floaty 3.2s ease-in-out infinite; }
+  #mascot-bubble {
+    position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%);
+    min-width: 180px; max-width: 240px; padding: 10px 14px; border-radius: 12px;
+    background: rgba(19, 27, 48, .95); border: 1px solid rgba(61,220,132,.4);
+    color: var(--text); font-size: 12.5px; line-height: 1.5; text-align: center;
+    box-shadow: 0 8px 24px rgba(0,0,0,.4);
+    animation: bubbleIn .3s cubic-bezier(.22,1.2,.36,1);
+  }
+  #mascot-bubble::after {
+    content: ""; position: absolute; left: 50%; bottom: -7px; transform: translateX(-50%) rotate(45deg);
+    width: 12px; height: 12px; background: rgba(19, 27, 48, .95);
+    border-right: 1px solid rgba(61,220,132,.4); border-bottom: 1px solid rgba(61,220,132,.4);
+  }
+  @keyframes bubbleIn { from { opacity: 0; transform: translateX(-50%) translateY(8px) scale(.9); } to { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); } }
+  /* 悬浮飘动 */
+  @keyframes floaty { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+  /* 眨眼（眼睛跟随鼠标由 JS 控制 translate，眨眼用内部 scaleY 包一层） */
+  #mascot .eye { transform-box: fill-box; transform-origin: 50% 50%; transition: translate .15s ease-out; animation: blink 4.5s infinite; }
+  #mascot .eye-r { animation-delay: .08s; }
+  @keyframes blink { 0%, 90%, 100% { transform: scaleY(1); } 94% { transform: scaleY(.1); } }
+  /* 天线摇摆 */
+  #mascot .ant { transform-box: fill-box; transform-origin: 50% 100%; animation: antSway 2.8s ease-in-out infinite; }
+  #mascot .ant-r { animation-delay: -.7s; }
+  @keyframes antSway { 0%, 100% { transform: rotate(-5deg); } 50% { transform: rotate(6deg); } }
+  /* 招手 */
+  #mascot .arm-r { transform-box: fill-box; transform-origin: 50% 12%; animation: wave 2.6s ease-in-out infinite; }
+  @keyframes wave { 0%, 100% { transform: rotate(0); } 50% { transform: rotate(16deg); } }
+  /* ===== 点击反馈：轻快弹跳 + 光环扩散 ===== */
+  #mascot .bot { transform-box: fill-box; transform-origin: 50% 100%; }
+  #mascot svg.jump .bot { animation: hop .55s cubic-bezier(.34, 1.56, .64, 1); }
+  @keyframes hop {
+    0%   { transform: translateY(0); }
+    35%  { transform: translateY(-24px); }
+    62%  { transform: translateY(0); }
+    80%  { transform: translateY(-6px); }
+    100% { transform: translateY(0); }
+  }
+  #mascot.happy .eye { animation: none; transform: scaleY(.15); }
+  #mascot .ring {
+    position: absolute; left: 50%; bottom: 55px; width: 46px; height: 46px;
+    border: 2px solid rgba(61, 220, 132, .85); border-radius: 50%;
+    transform: translate(-50%, 0) scale(.4); opacity: 1; pointer-events: none;
+    animation: ringOut .65s cubic-bezier(.2, .7, .4, 1) forwards;
+  }
+  @keyframes ringOut {
+    to { transform: translate(-50%, -24px) scale(2.8); opacity: 0; }
+  }
+  #mascot .dot-p {
+    position: absolute; left: 50%; bottom: 85px; width: 6px; height: 6px;
+    border-radius: 50%; background: #3ddc84; pointer-events: none;
+    box-shadow: 0 0 8px rgba(61, 220, 132, .8);
+    animation: dotFly .75s cubic-bezier(.2, .7, .4, 1) forwards;
+  }
+  @keyframes dotFly {
+    to { transform: translate(var(--dx), -68px) scale(.25); opacity: 0; }
+  }
+  @media (max-width: 640px) { #mascot { display: none; } }
+</style>
+<script>
+(function () {
+  /* ---------- 安卓小人看板娘（纯自绘，零依赖） ---------- */
+  var tips = [
+    "Hi～我是小安 🤖 田高琳的专属安卓小人！",
+    "10 年 Android 开发，我是他最熟的伙伴 💚",
+    "点击卡片可以查看项目详情哦～",
+    "我这一身绿，就是 Android 的信仰色！",
+    "从字节车载到快手可灵 AI，他都在写代码～",
+    "GitHub 主页在页脚，记得点个 ⭐",
+    "觉得田高琳不错的话，就联系他吧！"
+  ];
+  var el = document.createElement("div");
+  el.id = "mascot";
+  el.innerHTML =
+    '<div id="mascot-bubble"></div>' +
+    '<svg viewBox="0 0 140 150" width="150" height="161">' +
+      '<ellipse cx="70" cy="146" rx="36" ry="5" fill="#000" opacity=".35"/>' +
+      '<g class="bot">' +
+        '<g class="ant"><line x1="54" y1="34" x2="45" y2="16" stroke="#3ddc84" stroke-width="4" stroke-linecap="round"/><circle cx="44.5" cy="14.5" r="3.6" fill="#3ddc84"/></g>' +
+        '<g class="ant ant-r"><line x1="86" y1="34" x2="95" y2="16" stroke="#3ddc84" stroke-width="4" stroke-linecap="round"/><circle cx="95.5" cy="14.5" r="3.6" fill="#3ddc84"/></g>' +
+        '<path d="M38 54 a32 32 0 0 1 64 0 Z" fill="#3ddc84"/>' +
+        '<g class="eye"><circle cx="55" cy="44" r="5.4" fill="#ffffff"/></g>' +
+        '<g class="eye eye-r"><circle cx="85" cy="44" r="5.4" fill="#ffffff"/></g>' +
+        '<ellipse cx="47" cy="50" rx="4.5" ry="2.2" fill="#ff9d9d" opacity=".5"/>' +
+        '<ellipse cx="93" cy="50" rx="4.5" ry="2.2" fill="#ff9d9d" opacity=".5"/>' +
+        '<rect x="34" y="60" width="72" height="54" rx="12" fill="#3ddc84"/>' +
+        '<text x="70" y="93" font-size="15" fill="#0a2b18" opacity=".45" text-anchor="middle" font-family="ui-monospace,monospace" font-weight="bold">&lt;/&gt;</text>' +
+        '<rect class="arm-l" x="18" y="62" width="14" height="40" rx="7" fill="#3ddc84"/>' +
+        '<rect class="arm-r" x="108" y="62" width="14" height="40" rx="7" fill="#3ddc84"/>' +
+        '<rect x="48" y="112" width="13" height="26" rx="6.5" fill="#3ddc84"/>' +
+        '<rect x="79" y="112" width="13" height="26" rx="6.5" fill="#3ddc84"/>' +
+      '</g>' +
+    '</svg>';
+  document.body.appendChild(el);
+
+  var bubble = document.getElementById("mascot-bubble");
+  var i = Math.floor(Math.random() * tips.length);
+  bubble.textContent = tips[i];
+  var svg = el.querySelector("svg"), happyTimer = null;
+  el.addEventListener("click", function () {
+    /* 换台词 */
+    i = (i + 1) % tips.length;
+    bubble.style.animation = "none";
+    void bubble.offsetWidth;
+    bubble.style.animation = "";
+    bubble.textContent = tips[i];
+    /* 轻快弹跳（可连点重复触发） */
+    svg.classList.remove("jump");
+    void svg.getBoundingClientRect();
+    svg.classList.add("jump");
+    /* 眯眼一笑 0.6s */
+    el.classList.add("happy");
+    clearTimeout(happyTimer);
+    happyTimer = setTimeout(function () { el.classList.remove("happy"); }, 600);
+    /* 光环扩散 */
+    var ring = document.createElement("span");
+    ring.className = "ring";
+    el.appendChild(ring);
+    setTimeout(function () { ring.remove(); }, 700);
+    /* 绿色粒子四散 */
+    for (var k = 0; k < 5; k++) {
+      (function () {
+        var d = document.createElement("span");
+        d.className = "dot-p";
+        d.style.setProperty("--dx", (Math.random() * 100 - 50).toFixed(0) + "px");
+        d.style.animationDelay = (Math.random() * 0.08).toFixed(2) + "s";
+        el.appendChild(d);
+        setTimeout(function () { d.remove(); }, 900);
+      })();
+    }
+  });
+  /* 眼睛看向鼠标方向：以小人头部为原点计算向量，幅度放大到 ±5px */
+  var eyes = el.querySelectorAll(".eye");
+  document.addEventListener("mousemove", function (e) {
+    var r = el.getBoundingClientRect();
+    var cx = r.left + r.width / 2, cy = r.top + 60; /* 头部中心 */
+    var dx = (e.clientX - cx), dy = (e.clientY - cy);
+    var len = Math.sqrt(dx * dx + dy * dy) || 1;
+    var px = (dx / len) * Math.min(5, len / 40);   /* 方向单位向量 × 移动量 */
+    var py = (dy / len) * Math.min(4, len / 50);
+    eyes.forEach(function (eye) { eye.style.translate = px + "px " + py + "px"; });
+  });
+})();
+</script>
+</body>
+</html>
